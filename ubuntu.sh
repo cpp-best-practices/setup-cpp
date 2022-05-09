@@ -4,7 +4,7 @@ sudo apt upgrade -y
 
 sudo apt install -y jq g++-11 git python3 python3-pip cppcheck clang-tidy-13 clang-tidy ccache moreutils
 
-pip install conan ninja cmake
+pip install --user conan ninja cmake
 
 sudo snap install code --classic
 
