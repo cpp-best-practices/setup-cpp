@@ -1,7 +1,7 @@
 read -p "Press enter to install C++ related tools, ctrl-c to cancel" x
 
 
-sudo pacman -Syu --needed gcc git python-pip cppcheck clang ccache vscode cmake ninja vscode
+sudo pacman -Syu --needed gcc git python-pip cppcheck clang ccache vscode cmake ninja vscode jq moreutils
 pip install --user conan
 
 
