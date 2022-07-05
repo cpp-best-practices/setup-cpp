@@ -1,3 +1,6 @@
+# if this file cannot run by execution policy, copy this line below and paste into powershell window then drag-drop this script into window and it will run
+Set-ExecutionPolicy Bypass -scope Process -Force
+
 # for admin privileges if isn't running as an admin
 if (!
     #current role
@@ -21,8 +24,6 @@ if (!
 }
 
 $choice = Read-Host "Press enter to install C++ related tools, ctrl-c to cancel"
-
-Set-ExecutionPolicy Bypass -scope Process -Force
 
 if($choice -ne "")
 {
@@ -49,7 +50,8 @@ if (!(Get-Command $cmdName -errorAction SilentlyContinue))
 	Write-Host "Downloading $cmdName"
 	Import-Module BitsTransfer
 	Start-BitsTransfer -Source "https://github.com/microsoft/winget-cli/releases/latest/download/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle" -Destination "$pwd/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
-	Add-AppxPackage -Path "$pwd/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
+	Start-BitsTransfer -Source "https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx" -Destination "$pwd/Microsoft.VCLibs.x64.14.00.Desktop.appx"
+	Add-AppxPackage -Path "$pwd/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle" -DependencyPath "$pwd/Microsoft.VCLibs.x64.14.00.Desktop.appx"
 	$parameters = @{ ScriptBlock = { & "powershell.exe" $args[0] $args[1] }
                        ArgumentList = "$pwd/windows.ps1" }
 
@@ -61,10 +63,10 @@ else
 }
 
 
-winget install code --silent --accept-package-agreements
-winget install Git.git --silent --accept-package-agreements
-winget install python3 --silent --accept-package-agreements
-winget install cppcheck --silent --accept-package-agreements
+winget install code --silent --accept-package-agreements --accept-source-agreements
+winget install Git.git --silent --accept-package-agreements --accept-source-agreements
+winget install python3 --silent --accept-package-agreements --accept-source-agreements
+winget install cppcheck --silent --accept-package-agreements --accept-source-agreements
 
 
 $vsconfig = "{
