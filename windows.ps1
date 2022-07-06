@@ -36,7 +36,6 @@ if (!(Get-Command $cmdName -errorAction SilentlyContinue))
 {
 	Write-Error "$cmdName not exists"
 	Write-Host "Downloading $cmdName"
-	Out-File -FilePath "$pwd/.winget"
 	Import-Module BitsTransfer
 	Start-BitsTransfer -Source "https://github.com/microsoft/winget-cli/releases/latest/download/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle" -Destination $wingetPath
 	Start-BitsTransfer -Source "https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx" -Destination $vclibPath
