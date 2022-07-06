@@ -98,10 +98,14 @@ Out-File -FilePath $pwd/.vsconfig -InputObject $vsconfig
 
 winget install "Visual Studio Build Tools 2022" --silent --accept-package-agreements --override "--config $pwd/.vsconfig --installPath C:/VS2022-BuildTools --quiet --wait"
 
-$code = "$env:localappdata/Programs/Microsoft VS Code/code.exe"
+$Env:PATH+=";$env:localappdata/Programs/Microsoft` VS` Code"
 
-code --install-extension ms-vscode.cpptools-extension-pack --install-extension jeff-hykin.better-cpp-syntax --install-extension eamodio.gitlens --install-extension jdinhlife.gruvbox --install-extension xaver.clang-format
+$parameters = @{
+    ScriptBlock = { & "powershell.exe" $args[0] $args[1] }
+    ArgumentList = "code --install-extension ms-vscode.cpptools-extension-pack --install-extension jeff-hykin.better-cpp-syntax --install-extension eamodio.gitlens --install-extension jdinhlife.gruvbox --install-extension xaver.clang-format"
+}
 
+Invoke-Command @parameters -NoNewScope
 
 $parameters = @{
     ScriptBlock = { & "powershell.exe" $args[0] $args[1] }
