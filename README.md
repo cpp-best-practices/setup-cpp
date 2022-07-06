@@ -13,3 +13,11 @@ bash <(wget -qO- https://raw.githubusercontent.com/cpp-best-practices/setup-cpp/
 bash <(wget -qO- https://raw.githubusercontent.com/cpp-best-practices/setup-cpp/main/arch-manjaro.sh)
 ```
 
+## Windows (10/11)
+
+```powershell
+Set-ExecutionPolicy Bypass -scope Process -Force
+Import-Module BitsTransfer
+Start-BitsTransfer -Source "https://raw.githubusercontent.com/mguludag/setup-cpp/main/windows.ps1" -Destination $pwd/windows.ps1
+$pwd/windows.ps1
+```
