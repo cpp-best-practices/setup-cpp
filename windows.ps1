@@ -96,7 +96,8 @@ Out-File -FilePath $pwd/.vsconfig -InputObject $vsconfig
 winget install "Visual Studio Build Tools 2022" --silent --accept-package-agreements --override "--config $pwd/.vsconfig --installPath C:/VS2022-BuildTools --quiet --wait"
 
 Remove-Item "$pwd/.vsconfig"
-	
+
+[System.Environment]::SetEnvironmentVariable('Path', "$env:Path;C:\VS2022-BuildTools\VC\Tools\Llvm\bin",[System.EnvironmentVariableTarget]::User)
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
 code --install-extension ms-vscode.cpptools-extension-pack --install-extension jeff-hykin.better-cpp-syntax --install-extension eamodio.gitlens --install-extension jdinhlife.gruvbox --install-extension xaver.clang-format
