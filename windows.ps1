@@ -54,7 +54,7 @@ if (!(Get-Command $cmdName -errorAction SilentlyContinue))
 	Start-BitsTransfer -Source $uixamlUrl -Destination $uixamlZip
 	Expand-Archive $uixamlZip
 	Write-Host "Installing $cmdName"
-	Add-AppxProvisionedPackage -Online -PackagePath $wingetPath -DependencyPackagePath $uixamlPath -DependencyPackagePath $vclibPath -LicensePath $wingetLicPath
+	Add-AppxProvisionedPackage -Online -PackagePath $wingetPath -LicensePath $wingetLicPath # -DependencyPackagePath $uixamlPath -DependencyPackagePath $vclibPath
 	
 	# cleanup winget setup files
 	Remove-Item $vclibPath
