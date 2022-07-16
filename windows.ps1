@@ -30,7 +30,8 @@ else
 
 $cmdName = "winget"
 $arch = ({x64}, {x86})[![Environment]::Is64BitOperatingSystem]
-$wingetUrl = "https://github.com/microsoft/winget-cli/releases/latest/download/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
+$wingetUrl = "https://github.com/microsoft/winget-cli/releases/download/v1.1.12653/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
+$wingetLicUrl = "https://github.com/microsoft/winget-cli/releases/download/v1.1.12653/9c0fe2ce7f8e410eb4a8f417de74517e_License1.xml"
 $vclibUrl = "https://aka.ms/Microsoft.VCLibs.$arch.14.00.Desktop.appx"
 $uixamlUrl = "https://globalcdn.nuget.org/packages/microsoft.ui.xaml.2.7.1.nupkg"
 
@@ -40,6 +41,7 @@ $uixamlZip = "Microsoft.UI.Xaml.2.7.1.nupkg.zip"
 $vclibPath = "$pwd/Microsoft.VCLibs.14.00.Desktop.appx"
 $uixamlPath = "$pwd/Microsoft.UI.Xaml.2.7.1.nupkg\tools\AppX\$arch\Release\Microsoft.UI.Xaml.2.7.appx"
 $wingetPath = "$pwd/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
+$wingetLicPath = "$pwd/9c0fe2ce7f8e410eb4a8f417de74517e_License1.xml"
 
 if (!(Get-Command $cmdName -errorAction SilentlyContinue))
 {
@@ -47,15 +49,17 @@ if (!(Get-Command $cmdName -errorAction SilentlyContinue))
 	Write-Host "Downloading $cmdName"
 	Import-Module BitsTransfer
 	Start-BitsTransfer -Source $wingetUrl -Destination $wingetPath
+	Start-BitsTransfer -Source $wingetLicUrl -Destination $wingetPath
 	Start-BitsTransfer -Source $vclibUrl -Destination $vclibPath
 	Start-BitsTransfer -Source $uixamlUrl -Destination $uixamlZip
 	Expand-Archive $uixamlZip
 	Write-Host "Installing $cmdName"
-	Add-AppxPackage -Path $wingetPath -DependencyPath ($uixamlPath, $vclibPath)
+	Add-AppxPackage -Path $wingetPath -DependencyPath ($uixamlPath, $vclibPath) -LicensePath $wingetLicPath
 	
 	# cleanup winget setup files
 	Remove-Item $vclibPath
 	Remove-Item $wingetPath
+	Remove-Item $wingetLicPath
 	Remove-Item $uixamlZip
 	Remove-Item $uixamlFolder -Recurse
 }
