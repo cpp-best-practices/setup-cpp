@@ -49,11 +49,13 @@ if (!(Get-Command $cmdName -errorAction SilentlyContinue))
 	Write-Host "Downloading $cmdName"
 	Import-Module BitsTransfer
 	Start-BitsTransfer -Source $wingetUrl -Destination $wingetPath
-	Start-BitsTransfer -Source $wingetLicUrl -Destination $wingetPath
+	Start-BitsTransfer -Source $wingetLicUrl -Destination $wingetLicPath
 	Start-BitsTransfer -Source $vclibUrl -Destination $vclibPath
 	Start-BitsTransfer -Source $uixamlUrl -Destination $uixamlZip
 	Expand-Archive $uixamlZip
 	Write-Host "Installing $cmdName"
+	Add-AppxProvisionedPackage -Online -PackagePath $vclibPath -SkipLicense
+	Add-AppxProvisionedPackage -Online -PackagePath $uixamlPath -SkipLicense
 	Add-AppxProvisionedPackage -Online -PackagePath $wingetPath -LicensePath $wingetLicPath # -DependencyPackagePath $uixamlPath -DependencyPackagePath $vclibPath
 	
 	# cleanup winget setup files
