@@ -66,6 +66,7 @@ if (!(Get-Command $cmdName -errorAction SilentlyContinue))
 	Remove-Item $uixamlFolder -Recurse
 }
 
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
 winget install code --silent --accept-package-agreements --accept-source-agreements
 winget install Git.git --silent --accept-package-agreements --accept-source-agreements
