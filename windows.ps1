@@ -66,11 +66,11 @@ if (!(Get-Command $cmdName -errorAction SilentlyContinue))
 	Remove-Item $uixamlFolder -Recurse
 }
 
-$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + "$env:localappdata/Microsoft/WindowsApps;" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
 winget install code --silent --accept-package-agreements --accept-source-agreements
 winget install Git.git --silent --accept-package-agreements --accept-source-agreements
-winget install python3 --silent --accept-package-agreements --accept-source-agreements
+winget install Python.Python.3.9 --silent --accept-package-agreements --accept-source-agreements
 winget install cppcheck --silent --accept-package-agreements --accept-source-agreements
 
 $vsconfig = "{
@@ -105,7 +105,9 @@ winget install "Visual Studio Build Tools 2022" --silent --accept-package-agreem
 Remove-Item "$pwd/.vsconfig"
 
 [System.Environment]::SetEnvironmentVariable('Path', "$env:Path;C:\VS2022-BuildTools\VC\Tools\Llvm\bin",[System.EnvironmentVariableTarget]::User)
-$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + 
+"$env:localappdata/Microsoft/WindowsApps;$env:localappdata/Programs/Python/Python39/Scripts/;$env:localappdata/Programs/Python/Python39/;" +  
+[System.Environment]::GetEnvironmentVariable("Path","User")
 
 code --install-extension ms-vscode.cpptools-extension-pack --install-extension jeff-hykin.better-cpp-syntax --install-extension eamodio.gitlens --install-extension jdinhlife.gruvbox --install-extension xaver.clang-format
 
