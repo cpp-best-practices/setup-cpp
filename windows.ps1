@@ -64,13 +64,16 @@ if (!(Get-Command $cmdName -errorAction SilentlyContinue))
 	Remove-Item $wingetLicPath
 	Remove-Item $uixamlZip
 	Remove-Item $uixamlFolder -Recurse
+	
+	Start-Sleep -s 10
+
+	[System.Environment]::SetEnvironmentVariable('Path', "$env:localappdata\Microsoft\WindowsApps;" + 
+						[System.Environment]::GetEnvironmentVariable("Path","User") ,[System.EnvironmentVariableTarget]::User)
 }
 
-Start-Sleep -s 10
-
-[System.Environment]::SetEnvironmentVariable('Path', "$env:localappdata\Microsoft\WindowsApps;" + [System.Environment]::GetEnvironmentVariable("Path","User") ,[System.EnvironmentVariableTarget]::User)
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
+winget install Microsoft.PowerShell --silent --accept-package-agreements --accept-source-agreements
 winget install Microsoft.VisualStudioCode --silent --accept-package-agreements --accept-source-agreements
 winget install Git.git --silent --accept-package-agreements --accept-source-agreements
 winget install Python.Python.3.9 --silent --accept-package-agreements --accept-source-agreements
@@ -110,7 +113,14 @@ winget install "Visual Studio Build Tools 2022" --silent --accept-package-agreem
 
 Remove-Item "$pwd/.vsconfig"
 
-[System.Environment]::SetEnvironmentVariable('Path', "C:\VS2022-BuildTools\VC\Tools\Llvm\bin;$env:programfiles\CMake\bin;$env:localappdata\Programs\Microsoft VS Code;$env:localappdata\Programs\Microsoft VS Code\bin;$env:localappdata\Programs\Python\Python39\Scripts\;$env:localappdata\Programs\Python\Python39\;" + [System.Environment]::GetEnvironmentVariable("Path","User") ,[System.EnvironmentVariableTarget]::User)
+[System.Environment]::SetEnvironmentVariable('Path', "C:\VS2022-BuildTools\VC\Tools\Llvm\bin;" + 
+							"$env:programfiles\CMake\bin;" + 
+							"$env:programfiles\Cppcheck;" + 
+							"$env:localappdata\Programs\Microsoft VS Code;" + 
+							# "$env:localappdata\Programs\Microsoft VS Code\bin;" + 
+							# "$env:localappdata\Programs\Python\Python39\Scripts\;" + 
+							# "$env:localappdata\Programs\Python\Python39\;" + 
+							[System.Environment]::GetEnvironmentVariable("Path","User") ,[System.EnvironmentVariableTarget]::User)
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
 Start-Sleep -s 10
