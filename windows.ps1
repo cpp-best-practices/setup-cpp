@@ -66,6 +66,8 @@ if (!(Get-Command $cmdName -errorAction SilentlyContinue))
 	Remove-Item $uixamlFolder -Recurse
 }
 
+Start-Sleep -s 10
+
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + "$env:localappdata/Microsoft/WindowsApps;" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
 winget install code --silent --accept-package-agreements --accept-source-agreements
