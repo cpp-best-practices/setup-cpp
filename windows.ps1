@@ -68,12 +68,15 @@ if (!(Get-Command $cmdName -errorAction SilentlyContinue))
 
 Start-Sleep -s 10
 
-$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + "$env:localappdata/Microsoft/WindowsApps;" + [System.Environment]::GetEnvironmentVariable("Path","User")
+[System.Environment]::SetEnvironmentVariable('Path', "$env:localappdata/Microsoft/WindowsApps;",[System.EnvironmentVariableTarget]::User)
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
 winget install code --silent --accept-package-agreements --accept-source-agreements
 winget install Git.git --silent --accept-package-agreements --accept-source-agreements
 winget install Python.Python.3.9 --silent --accept-package-agreements --accept-source-agreements
+winget install Kitware.CMake --silent --accept-package-agreements --accept-source-agreements
 winget install cppcheck --silent --accept-package-agreements --accept-source-agreements
+
 
 $vsconfig = "{
   `"version`": `"1.0`",`
@@ -96,6 +99,7 @@ $vsconfig = "{
 	`"Microsoft.VisualStudio.Component.VC.CoreIde`",`
 	`"Microsoft.VisualStudio.ComponentGroup.NativeDesktop.Core`",`
 	`"Microsoft.VisualStudio.Component.VC.Llvm.ClangToolset`",`
+	`"Microsoft.VisualStudio.Component.VC.Llvm.Clang`",`
 	`"Microsoft.VisualStudio.Workload.VCTools`"`
   ]
 }"
@@ -106,12 +110,10 @@ winget install "Visual Studio Build Tools 2022" --silent --accept-package-agreem
 
 Remove-Item "$pwd/.vsconfig"
 
-[System.Environment]::SetEnvironmentVariable('Path', "$env:Path;C:\VS2022-BuildTools\VC\Tools\Llvm\bin",[System.EnvironmentVariableTarget]::User)
-$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + 
-"$env:localappdata/Microsoft/WindowsApps;$env:localappdata/Programs/Python/Python39/Scripts/;$env:localappdata/Programs/Python/Python39/;" +  
-[System.Environment]::GetEnvironmentVariable("Path","User")
+[System.Environment]::SetEnvironmentVariable('Path', "$env:Path;C:\VS2022-BuildTools\VC\Tools\Llvm\bin;$env:programfiles/CMake/bin;$env:localappdata/Programs/Microsoft VS Code;$env:localappdata/Microsoft/WindowsApps;$env:localappdata/Programs/Python/Python39/Scripts/;$env:localappdata/Programs/Python/Python39/;",[System.EnvironmentVariableTarget]::User)
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
-code --install-extension ms-vscode.cpptools-extension-pack --install-extension jeff-hykin.better-cpp-syntax --install-extension eamodio.gitlens --install-extension jdinhlife.gruvbox --install-extension xaver.clang-format
+code --install-extension ms-vscode.cpptools-extension-pack --install-extension ms-vscode.cmake-tools --install-extension yuzuhakuon.vscode-cpp-project --install-extension jeff-hykin.better-cpp-syntax --install-extension eamodio.gitlens --install-extension jdinhlife.gruvbox --install-extension xaver.clang-format
 
 pip install --user conan ninja cmake
 
