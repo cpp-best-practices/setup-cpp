@@ -113,6 +113,8 @@ Remove-Item "$pwd/.vsconfig"
 [System.Environment]::SetEnvironmentVariable('Path', "$env:Path;C:\VS2022-BuildTools\VC\Tools\Llvm\bin;$env:programfiles/CMake/bin;$env:localappdata/Programs/Microsoft VS Code;$env:localappdata/Microsoft/WindowsApps;$env:localappdata/Programs/Python/Python39/Scripts/;$env:localappdata/Programs/Python/Python39/;",[System.EnvironmentVariableTarget]::User)
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
+Start-Sleep -s 10
+
 code --install-extension ms-vscode.cpptools-extension-pack --install-extension ms-vscode.cmake-tools --install-extension yuzuhakuon.vscode-cpp-project --install-extension jeff-hykin.better-cpp-syntax --install-extension eamodio.gitlens --install-extension jdinhlife.gruvbox --install-extension xaver.clang-format
 
 pip install --user conan ninja cmake
