@@ -71,7 +71,7 @@ Start-Sleep -s 10
 [System.Environment]::SetEnvironmentVariable('Path', "$env:localappdata/Microsoft/WindowsApps;",[System.EnvironmentVariableTarget]::User)
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
-winget install code --silent --accept-package-agreements --accept-source-agreements
+winget install Microsoft.VisualStudioCode --silent --accept-package-agreements --accept-source-agreements
 winget install Git.git --silent --accept-package-agreements --accept-source-agreements
 winget install Python.Python.3.9 --silent --accept-package-agreements --accept-source-agreements
 winget install Kitware.CMake --silent --accept-package-agreements --accept-source-agreements
