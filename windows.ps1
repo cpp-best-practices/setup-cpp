@@ -118,7 +118,7 @@ Remove-Item "$pwd/.vsconfig"
 							"$env:programfiles\Cppcheck;" + 
 							"$env:localappdata\Programs\Microsoft VS Code;" + 
 							# "$env:localappdata\Programs\Microsoft VS Code\bin;" + 
-							# "$env:localappdata\Programs\Python\Python39\Scripts\;" + 
+							"$env:appdata\Python\Python39\Scripts\;" + 
 							# "$env:localappdata\Programs\Python\Python39\;" + 
 							[System.Environment]::GetEnvironmentVariable("Path","User") ,[System.EnvironmentVariableTarget]::User)
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
