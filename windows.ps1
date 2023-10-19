@@ -125,7 +125,7 @@ $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";"
 
 Start-Sleep -s 10
 
-code.cmd --install-extension ms-vscode.cpptools-extension-pack --install-extension yuzuhakuon.vscode-cpp-project --install-extension jeff-hykin.better-cpp-syntax --install-extension usernamehw.errorlens --install-extension eamodio.gitlens --install-extension jdinhlife.gruvbox --install-extension xaver.clang-format
+code.cmd --install-extension ms-vscode.cpptools-extension-pack --install-extension yuzuhakuon.vscode-cpp-project --install-extension jeff-hykin.better-cpp-syntax --install-extension NathanJ.cpp-tools-plugin --install-extension usernamehw.errorlens --install-extension eamodio.gitlens --install-extension jdinhlife.gruvbox --install-extension xaver.clang-format
 
 pip install --user conan ninja cmake
 
