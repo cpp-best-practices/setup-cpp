@@ -124,7 +124,7 @@ $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";"
 
 Start-Sleep -s 10
 
-code.cmd --install-extension ms-vscode.cpptools-extension-pack --install-extension yuzuhakuon.vscode-cpp-project --install-extension jeff-hykin.better-cpp-syntax --install-extension notskm.clang-tidy --install-extension usernamehw.errorlens --install-extension eamodio.gitlens --install-extension jdinhlife.gruvbox --install-extension xaver.clang-format
+code.cmd --install-extension ms-vscode.cpptools-extension-pack --install-extension yuzuhakuon.vscode-cpp-project --install-extension jeff-hykin.better-cpp-syntax --install-extension CS128.cs128-clang-tidy --install-extension usernamehw.errorlens --install-extension eamodio.gitlens --install-extension jdinhlife.gruvbox --install-extension xaver.clang-format
 
 $settingsPath = "$env:APPDATA\Code\User\settings.json";
 
@@ -173,7 +173,7 @@ if($settingsData){
 		"clang-tidy.checks" = $clang_tidy_checks
 	}
 	
-	$settingsData.GetEnumerator().ForEach({$settingsData | Add-Member -Name $($_.Key) -Value $($_.Value) -MemberType NoteProperty -Force})
+	$settings.GetEnumerator().ForEach({$settingsData | Add-Member -Name $($_.Key) -Value $($_.Value) -MemberType NoteProperty -Force})
 }
 
 $settingsData | ConvertTo-Json | Out-File $settingsPath -Encoding utf8
