@@ -104,7 +104,7 @@ $components = @(
 	"Microsoft.VisualStudio.Workload.VCTools"
 	)
 
-$vsconfig = @{"version" = 1.0; "components" = $components}
+$vsconfig = @{"version" = "1.0"; "components" = $components}
 
 $vsconfig | ConvertTo-Json | Out-File $pwd/.vsconfig -Encoding utf8
 
