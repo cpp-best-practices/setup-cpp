@@ -81,33 +81,32 @@ winget install Kitware.CMake --silent --accept-package-agreements --accept-sourc
 winget install cppcheck --silent --accept-package-agreements --accept-source-agreements
 
 
-$vsconfig = "{
-  `"version`": `"1.0`",`
-  `"components`": [
-	`"Microsoft.VisualStudio.Component.Roslyn.Compiler`",`
-	`"Microsoft.Component.MSBuild`",`
-	`"Microsoft.VisualStudio.Component.CoreBuildTools`",`
-	`"Microsoft.VisualStudio.Workload.MSBuildTools`",`
-	`"Microsoft.VisualStudio.Component.Windows10SDK`",`
-	`"Microsoft.VisualStudio.Component.VC.CoreBuildTools`",`
-	`"Microsoft.VisualStudio.Component.VC.Tools.x86.x64`",`
-	`"Microsoft.VisualStudio.Component.VC.Redist.14.Latest`",`
-	`"Microsoft.VisualStudio.Component.Windows10SDK.19041`",`
-	`"Microsoft.VisualStudio.Component.VC.CMake.Project`",`
-	`"Microsoft.VisualStudio.Component.TestTools.BuildTools`",`
-	`"Microsoft.VisualStudio.Component.VC.ATL`",`
-	`"Microsoft.VisualStudio.Component.VC.ASAN`",`
-	`"Microsoft.VisualStudio.Component.VC.Modules.x86.x64`",`
-	`"Microsoft.VisualStudio.Component.TextTemplating`",`
-	`"Microsoft.VisualStudio.Component.VC.CoreIde`",`
-	`"Microsoft.VisualStudio.ComponentGroup.NativeDesktop.Core`",`
-	`"Microsoft.VisualStudio.Component.VC.Llvm.ClangToolset`",`
-	`"Microsoft.VisualStudio.Component.VC.Llvm.Clang`",`
-	`"Microsoft.VisualStudio.Workload.VCTools`"`
-  ]
-}"
+$components = @(
+	"Microsoft.VisualStudio.Component.Roslyn.Compiler",
+	"Microsoft.Component.MSBuild",
+	"Microsoft.VisualStudio.Component.CoreBuildTools",
+	"Microsoft.VisualStudio.Workload.MSBuildTools",
+	"Microsoft.VisualStudio.Component.Windows10SDK",
+	"Microsoft.VisualStudio.Component.VC.CoreBuildTools",
+	"Microsoft.VisualStudio.Component.VC.Tools.x86.x64",
+	"Microsoft.VisualStudio.Component.VC.Redist.14.Latest",
+	"Microsoft.VisualStudio.Component.Windows10SDK.19041",
+	"Microsoft.VisualStudio.Component.VC.CMake.Project",
+	"Microsoft.VisualStudio.Component.TestTools.BuildTools",
+	"Microsoft.VisualStudio.Component.VC.ATL",
+	"Microsoft.VisualStudio.Component.VC.ASAN",
+	"Microsoft.VisualStudio.Component.VC.Modules.x86.x64",
+	"Microsoft.VisualStudio.Component.TextTemplating",
+	"Microsoft.VisualStudio.Component.VC.CoreIde",
+	"Microsoft.VisualStudio.ComponentGroup.NativeDesktop.Core",
+	"Microsoft.VisualStudio.Component.VC.Llvm.ClangToolset",
+	"Microsoft.VisualStudio.Component.VC.Llvm.Clang",
+	"Microsoft.VisualStudio.Workload.VCTools"
+	)
 
-Out-File -FilePath $pwd/.vsconfig -InputObject $vsconfig
+$vsconfig = @{"version" = 1.0; "components" = $components}
+
+$vsconfig | ConvertTo-Json | Out-File $pwd/.vsconfig -Encoding utf8
 
 winget install "Visual Studio Build Tools 2022" --silent --accept-package-agreements --override "--config $pwd/.vsconfig --installPath C:/VS2022-BuildTools --quiet --wait"
 
@@ -126,6 +125,58 @@ $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";"
 Start-Sleep -s 10
 
 code.cmd --install-extension ms-vscode.cpptools-extension-pack --install-extension yuzuhakuon.vscode-cpp-project --install-extension jeff-hykin.better-cpp-syntax --install-extension notskm.clang-tidy --install-extension usernamehw.errorlens --install-extension eamodio.gitlens --install-extension jdinhlife.gruvbox --install-extension xaver.clang-format
+
+$settingsPath = "$env:APPDATA\Code\User\settings.json";
+
+if (!(Test-Path $settingsPath)) {
+  @{} | ConvertTo-Json | Out-File $settingsPath -Encoding utf8
+}
+
+$settingsData = $jsondata = Get-Content -Raw -Path $settingsPath -ErrorAction silentlycontinue | ConvertFrom-Json
+
+if($settingsData){
+	$clang_tidy_checks = @(
+			"bugprone-*",
+			"clang-analyzer-*",
+			"concurrency-*",
+			"cppcoreguidelines-*",
+			"hicpp-*",
+			"misc-*",
+			"modernize-*",
+			"performance-*",
+			"readability-*"
+	)
+	$settings = @{
+		"window.commandCenter" = $true;
+		"window.titleBarStyle" = "custom";
+		"window.dialogStyle" = "custom";
+		"editor.inlineSuggest.enabled" = $true;
+		"editor.guides.indentation" = $true;
+		"editor.guides.bracketPairs" = $true;
+		"C_Cpp.inactiveRegionOpacity" = 0.55;
+		"C_Cpp.autocompleteAddParentheses" = $true;
+		"C_Cpp.experimentalFeatures" = "enabled";
+		"C_Cpp.inlayHints.parameterNames.enabled" = $true;
+		"C_Cpp.inlayHints.autoDeclarationTypes.showOnLeft" = $true;
+		"C_Cpp.inlayHints.autoDeclarationTypes.enabled" = $true;
+		"C_Cpp.inlayHints.referenceOperator.enabled" = $true;
+		"C_Cpp.intelliSenseEngineFallback" = "enabled";
+		"C_Cpp.default.cppStandard" = "c++23";
+		"C_Cpp.default.cStandard" = "c23";
+		"C_Cpp.default.intelliSenseMode" = "windows-msvc-x64";
+		"C_Cpp.default.mergeConfigurations" = $true;
+		"C_Cpp.default.configurationProvider" = "ms-vscode.cpptools";
+		"C_Cpp.intelliSenseEngine" = "Tag Parser";
+		"C_Cpp.codeAnalysis.clangTidy.enabled" = $true;
+		"C_Cpp.codeAnalysis.clangTidy.checks.enabled" = $clang_tidy_checks;
+		"clang-tidy.buildPath" = "`${workspaceFolder}/build";
+		"clang-tidy.checks" = $clang_tidy_checks
+	}
+	
+	$settingsData.GetEnumerator().ForEach({$settingsData | Add-Member -Name $($_.Key) -Value $($_.Value) -MemberType NoteProperty -Force})
+}
+
+$settingsData | ConvertTo-Json | Out-File $settingsPath -Encoding utf8
 
 pip install --user conan ninja cmake
 
