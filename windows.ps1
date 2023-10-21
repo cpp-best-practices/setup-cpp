@@ -30,8 +30,8 @@ else
 
 $cmdName = "winget"
 $arch = ({x64}, {x86})[![Environment]::Is64BitOperatingSystem]
-$wingetUrl = "https://github.com/microsoft/winget-cli/releases/download/v1.3.2691/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
-$wingetLicUrl = "https://github.com/microsoft/winget-cli/releases/download/v1.3.2691/7bcb1a0ab33340daa57fa5b81faec616_License1.xml"
+$wingetUrl = "https://github.com/microsoft/winget-cli/releases/download/v1.6.2771/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
+$wingetLicUrl = "https://github.com/microsoft/winget-cli/releases/download/v1.6.2771/27abf0d1afe340e7a64fb696056b2672_License1.xml"
 $vclibUrl = "https://aka.ms/Microsoft.VCLibs.$arch.14.00.Desktop.appx"
 $uixamlUrl = "https://globalcdn.nuget.org/packages/microsoft.ui.xaml.2.7.1.nupkg"
 
